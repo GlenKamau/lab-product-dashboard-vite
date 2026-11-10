@@ -1,22 +1,49 @@
-import React, { useState } from 'react';
-import ProductList from './components/ProductList';
+import React, { useState } from "react";
+import { Button, Container, Stack, Typography } from "@mui/material";
+import ProductList from "./components/ProductList";
+
+const initialProducts = [
+  { id: 1, name: "Laptop", price: 900, inStock: true },
+  { id: 2, name: "Phone", price: 600, inStock: false },
+  { id: 3, name: "Tablet", price: 400, inStock: true },
+];
 
 const App = () => {
-  // TODO: Define initial product data
+  const [products, setProducts] = useState(initialProducts);
+  const [filter, setFilter] = useState("all");
 
-  // TODO: Implement state to manage filtering
+  const filteredProducts = products.filter((product) => {
+    if (filter === "inStock") return product.inStock;
+    if (filter === "outOfStock") return !product.inStock;
+    return true;
+  });
 
-  // TODO: Implement logic to filter products based on availability
+  const handleRemove = (id) => {
+    setProducts((prev) => prev.filter((product) => product.id !== id));
+  };
 
   return (
-    <div>
-      <h1>{/* TODO: Add 'Product Dashboard' title here */}</h1>
-      
-      {/* TODO: Add buttons to allow filtering by availability */}
+    <Container sx={{ py: 4 }}>
+      <>
+        <Typography variant="h3" component="h1" gutterBottom>
+          Product Dashboard
+        </Typography>
 
-      {/* TODO: Render the ProductList component and pass filtered products */}
-      
-    </div>
+        <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+          <Button variant="contained" onClick={() => setFilter("all")}>
+            All Products
+          </Button>
+          <Button variant="contained" color="success" onClick={() => setFilter("inStock")}>
+            In Stock
+          </Button>
+          <Button variant="contained" color="error" onClick={() => setFilter("outOfStock")}>
+            Out of Stock
+          </Button>
+        </Stack>
+
+        <ProductList products={filteredProducts} onRemove={handleRemove} />
+      </>
+    </Container>
   );
 };
 
