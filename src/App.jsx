@@ -44,6 +44,7 @@ const App = () => {
         <ProductList products={filteredProducts} onRemove={handleRemove} />
       </>
     </Container>
+    
   );
 };
 
